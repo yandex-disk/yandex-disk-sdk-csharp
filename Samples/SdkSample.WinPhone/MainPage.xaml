@@ -1,0 +1,141 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="SdkSample.WinPhone.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True" Loaded="mainPage_Loaded">
+    
+    <phone:PhoneApplicationPage.Resources>
+
+        <DataTemplate x:Key="DiskItemStyle">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}"/>
+                <StackPanel Margin="10">
+                    <TextBlock Text="{Binding DiskItem.DisplayName}" TextWrapping="NoWrap" FontSize="20" Margin="5,0,0,0"/>
+                    <TextBlock Text="{Binding DiskItem.FullPath}" TextWrapping="NoWrap" FontSize="12" Margin="10,0,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StorageItemStyle">
+            <StackPanel Margin="10">
+                <TextBlock Text="{Binding}" TextWrapping="NoWrap" FontSize="20" Margin="5,0,0,0"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <shell:ApplicationBar x:Key="diskAppBar" IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="Remove" Click="remove_Click"/>
+                <shell:ApplicationBarMenuItem Text="Copy" Click="copy_Click"/>
+                <shell:ApplicationBarMenuItem Text="Cut" Click="cut_Click"/>
+                <shell:ApplicationBarMenuItem Text="Paste" Click="paste_Click"/>
+                <shell:ApplicationBarMenuItem Text="New folder" Click="newFolder_Click"/>
+            </shell:ApplicationBar.MenuItems>
+            <shell:ApplicationBarIconButton Text="Refresh" IconUri="/Assets/AppBar/appbar.refresh.rest.png" Click="refresh_Click"/>
+            <shell:ApplicationBarIconButton Text="Download" IconUri="/Assets/AppBar/appbar.download.rest.png" Click="download_Click" />
+            <shell:ApplicationBarIconButton Text="Publish" IconUri="/Assets/AppBar/appbar.share.rest.png" Click="publish_Click" />
+            <shell:ApplicationBarIconButton Text="Unpublish" IconUri="/Assets/AppBar/appbar.stop.rest.png" Click="unpublish_Click" />
+        </shell:ApplicationBar>
+
+        <shell:ApplicationBar x:Key="storageAppBar" IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton Text="Delete" IconUri="/Assets/AppBar/appbar.delete.rest.png" Click="delete_Click" />
+        </shell:ApplicationBar>
+
+        <shell:ApplicationBar x:Key="authStorageAppBar" IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton Text="Upload" IconUri="/Assets/AppBar/appbar.upload.rest.png" Click="upload_Click" />
+            <shell:ApplicationBarIconButton Text="Delete" IconUri="/Assets/AppBar/appbar.delete.rest.png" Click="delete_Click" />
+        </shell:ApplicationBar>
+
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <Button Name="btnDisk" Content="Disk" Click="btnDisk_Click"/>
+                <Button Name="btnStorage" Content="Storage" Click="btnStorage_OnClick"/>
+                <ProgressBar Name="progressBar" Margin="10" Width="200" IsIndeterminate="True" Visibility="Collapsed" />
+            </StackPanel>
+            <TextBlock x:Name="pageTitle" Text="{Binding CurrentPath}" FontSize="26" Margin="10,0,0,0"/>
+        </StackPanel>
+            
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <ListBox 
+                Name="diskListBox"
+                ItemsSource="{Binding DiskItems}"
+                SelectionMode="Multiple"
+                ItemTemplate="{StaticResource DiskItemStyle}"
+                SelectionChanged="lbDiskItems_SelectionChanged"/>
+
+            <ListBox
+                Name="lbStorageItems"
+                Visibility="Collapsed"
+                ItemsSource="{Binding StorageItems}"
+                ItemTemplate="{StaticResource StorageItemStyle}"
+                SelectionChanged="lbStorageItems_SelectionChanged"/>
+        </Grid>
+
+        <!-- popups -->
+        
+        <Popup x:Name="newFolderPopup">
+            <Border CornerRadius="1" BorderThickness="1" BorderBrush="White" Padding="5">
+                <StackPanel Name="newFolderPanel" Height="150" Width="300" Background="Black">
+                    <TextBox 
+                        x:Name="txtFolderName"
+                        Text="New folder"
+                        Width="350"
+                        Height="75"/>
+                    <Grid>
+                        <Button 
+                            Content="Cancel"
+                            HorizontalAlignment="Left"
+                            Height="75"
+                            Click="cancelFolder_Click"/>
+                        <Button 
+                            Content="Create" 
+                            HorizontalAlignment="Right"
+                            Height="75"
+                            Click="createFolder_Click"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <Popup x:Name="linkPopup">
+            <Border CornerRadius="1" BorderThickness="1" BorderBrush="White" Padding="5">
+                <StackPanel Name="linkPanel" Width="260" Height="165" Background="Black">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Text="Link copied to clipboard"
+                        FontSize="20"/>
+                    <TextBox 
+                        x:Name="txtLink"
+                        Width="250"
+                        Height="75"/>
+                    <Button 
+                        Content="Close"
+                        HorizontalAlignment="Center"
+                        Height="70"
+                        Click="close_Click"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+        
+    </Grid>
+
+</phone:PhoneApplicationPage>

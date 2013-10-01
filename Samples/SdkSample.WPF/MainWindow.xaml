@@ -1,0 +1,88 @@
+﻿<Window x:Class="SdkSample.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:SdkSample.WPF.Converters"
+        Title="{Binding WindowTitle}" Height="600" Width="800" 
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    
+    <Window.Resources>
+        <converters:ItemTypeConverter x:Key="itemTypeConverter"/>
+        <converters:ItemSizeConverter x:Key="itemSizeConverter"/>
+
+        <Style x:Key="popupBorderStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="Background" Value="LightBlue"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+
+        <Style x:Key="buttonStyle" TargetType="Button">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+        
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsLoggedIn}">
+            <Button Style="{StaticResource buttonStyle}" Content="Home" Click="home_Click"/>
+            <Button Style="{StaticResource buttonStyle}" Content="Go Up" Click="goUp_Click"/>
+            <Button Style="{StaticResource buttonStyle}" Content="Back" Click="back_Click"/>
+            <ProgressBar Name="progressBar" IsIndeterminate="True" Width="550" Height="20" Margin="25,0,0,0" Visibility="Collapsed"/>
+        </StackPanel>
+        
+        <DataGrid Name="gridItems" Grid.Row="1" ItemsSource="{Binding FolderItems}" AutoGenerateColumns="False" 
+                  CanUserAddRows="False" IsReadOnly="True" SelectionChanged="gridItems_SelectionChanged" 
+                  MouseDoubleClick="gridItems_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Width="300" Binding="{Binding Path=DisplayName}"/>
+                <DataGridTextColumn Header="Date" Width="100" Binding="{Binding Path=LastModified, StringFormat='dd/MM/yyyy hh:mm'}"/>
+                <DataGridTextColumn Header="Size" Width="100" Binding="{Binding Path=ContentLength, Converter={StaticResource itemSizeConverter}}"/>
+                <DataGridTextColumn Header="Type" Width="100" Binding="{Binding Path=ContentType, Converter={StaticResource itemTypeConverter}}"/>
+                <DataGridTextColumn Header="Public" Width="*" Binding="{Binding Path=PublicUrl}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <DockPanel Grid.Row="2" VerticalAlignment="Bottom">
+            <DockPanel IsEnabled="{Binding IsLoggedIn}">
+                <Button Style="{StaticResource buttonStyle}" Content="Refresh" Click="refresh_Click" />
+                <Button Style="{StaticResource buttonStyle}" IsEnabled="{Binding IsDownloadAvailable}" Content="Get" Click="download_Click" />
+                <Button Style="{StaticResource buttonStyle}" Content="Upload" Click="upload_Click" />
+                <Button Style="{StaticResource buttonStyle}" IsEnabled="{Binding IsSelected}" Content="Copy" Click="copy_Click" />
+                <Button Style="{StaticResource buttonStyle}" IsEnabled="{Binding IsSelected}" Content="Cut" Click="cut_Click" />
+                <Button Style="{StaticResource buttonStyle}" IsEnabled="{Binding IsExistItems}" Content="Paste" Click="paste_Click" />
+                <Button Style="{StaticResource buttonStyle}" Content="Make Dir" Click="makeDir_Click" />
+                <Button Style="{StaticResource buttonStyle}" IsEnabled="{Binding IsSelected}" Content="Remove" Click="remove_Click" />
+                <Button Style="{StaticResource buttonStyle}" IsEnabled="{Binding IsSelected}" Content="Trash" Click="trash_Click" />
+                <Button Style="{StaticResource buttonStyle}" IsEnabled="{Binding IsSingleSelected}" Content="Publish" Click="publish_Click" />
+                <Button Style="{StaticResource buttonStyle}" IsEnabled="{Binding IsSingleSelected}" Content="UnPublish" Click="unPublish_Click" />
+            </DockPanel>
+            <Button Style="{StaticResource buttonStyle}" IsEnabled="{Binding IsLoggedOut}" HorizontalAlignment="Right" Content="Login" Click="login_Click" />
+        </DockPanel>
+
+        <Popup Name="popupNewFolder" StaysOpen="False" Placement="Center" MaxWidth="250" PopupAnimation="Scroll" IsOpen="False">
+            <Border Style="{StaticResource popupBorderStyle}">
+                <StackPanel Orientation="Horizontal" Margin="10">
+                    <TextBox Name="txtNewFolderName" Text="NewFolder" Width="150"/>
+                    <Button Content="Create" Width="50" Margin="10,0,0,0" Click="createFolder_Click"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <Popup x:Name="popupLink" StaysOpen="False" Placement="Center" PopupAnimation="Scroll" IsOpen="False">
+            <Border Style="{StaticResource popupBorderStyle}">
+                <StackPanel Name="linkPanel" Width="260" Height="75">
+                    <TextBlock Text="Link copied to clipboard" FontSize="20" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="txtLink" Width="250" Height="25" Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+    </Grid>
+</Window>

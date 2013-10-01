@@ -1,0 +1,11 @@
+SDK/Disk.SDK.Provider (.NET 4.0)/obj/*
+SDK/Disk.SDK.Provider (WinPhone)/obj/*
+SDK/Disk.SDK.Provider (WinRT)/bin/*
+SDK/Disk.SDK.Provider (WinRT)/obj/*
+SDK/Disk.Sdk/obj/*
+Samples/SdkSample.WPF/bin/*
+Samples/SdkSample.WPF/obj/*
+Samples/SdkSample.WinPhone/bin/*
+Samples/SdkSample.WinPhone/obj/*
+Samples/SdkSample.WinRT/bin/*
+Samples/SdkSample.WinRT/obj/*

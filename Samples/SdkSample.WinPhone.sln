@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SdkSample.WinPhone", "SdkSample.WinPhone\SdkSample.WinPhone.csproj", "{00CEFD93-F257-4C44-86C6-1CA1D76D9D1A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDK", "SDK", "{BE992367-EF5A-4B5A-A523-C689179345E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disk.SDK", "..\SDK\Disk.SDK\Disk.SDK.csproj", "{D37D6F1C-812D-4096-B7CD-5EA46B48C4EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disk.SDK.Provider (WinPhone)", "..\SDK\Disk.SDK.Provider (WinPhone)\Disk.SDK.Provider (WinPhone).csproj", "{1366DA6D-68AB-47B5-8A1D-918CE92B19E2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00CEFD93-F257-4C44-86C6-1CA1D76D9D1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00CEFD93-F257-4C44-86C6-1CA1D76D9D1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00CEFD93-F257-4C44-86C6-1CA1D76D9D1A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{00CEFD93-F257-4C44-86C6-1CA1D76D9D1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00CEFD93-F257-4C44-86C6-1CA1D76D9D1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00CEFD93-F257-4C44-86C6-1CA1D76D9D1A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D37D6F1C-812D-4096-B7CD-5EA46B48C4EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D37D6F1C-812D-4096-B7CD-5EA46B48C4EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D37D6F1C-812D-4096-B7CD-5EA46B48C4EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D37D6F1C-812D-4096-B7CD-5EA46B48C4EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1366DA6D-68AB-47B5-8A1D-918CE92B19E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1366DA6D-68AB-47B5-8A1D-918CE92B19E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1366DA6D-68AB-47B5-8A1D-918CE92B19E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1366DA6D-68AB-47B5-8A1D-918CE92B19E2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D37D6F1C-812D-4096-B7CD-5EA46B48C4EE} = {BE992367-EF5A-4B5A-A523-C689179345E3}
+		{1366DA6D-68AB-47B5-8A1D-918CE92B19E2} = {BE992367-EF5A-4B5A-A523-C689179345E3}
+	EndGlobalSection
+EndGlobal
