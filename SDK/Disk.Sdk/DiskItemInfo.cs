@@ -60,6 +60,12 @@ namespace Disk.SDK
         public DateTime CreationDate { get; set; }
 
         /// <summary>
+        /// Gets a value indicating whether this instance is directory.
+        /// </summary>
+        /// <value><c>true</c> if this instance is directory; otherwise, <c>false</c>.</value>
+        public bool IsDirectory { get; set; }
+
+        /// <summary>
         /// Gets or sets the decoded full path of the item.
         /// </summary>
         /// <value>The full path of the item.</value>
@@ -77,15 +83,6 @@ namespace Disk.SDK
         {
             get { return Uri.UnescapeDataString(this.OriginalDisplayName); }
             set { this.OriginalDisplayName = value; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is directory.
-        /// </summary>
-        /// <value><c>true</c> if this instance is directory; otherwise, <c>false</c>.</value>
-        public bool IsDirectory
-        {
-            get { return this.ContentLength == 0; }
         }
 
         /// <summary>

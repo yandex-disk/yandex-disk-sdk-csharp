@@ -11,6 +11,7 @@ using Disk.SDK;
 using Disk.SDK.Provider;
 
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.System;
@@ -38,6 +39,7 @@ namespace SdkSample.WinRT
         /// The sdk client
         /// </summary>
         private IDiskSdkClient sdk;
+        private IAsyncOperation<IUICommand> command;
         /// <summary>
         /// The items of items in the current folder
         /// </summary>
@@ -186,17 +188,31 @@ namespace SdkSample.WinRT
             this.OnPropertyChanged("IsLoggedOut");
         }
 
-        private void ShowMessage(string message, string title)
+        private Task ShowMessage(string message, string title)
         {
-            Dispatcher.RunAsync(
-                CoreDispatcherPriority.Normal,
-                async () =>
+            CoreDispatcher dispatcher = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher;
+            Func<object, Task<bool>> action = null;
+            action = async (o) =>
+            {
+                try
+                {
+                    if (dispatcher.HasThreadAccess) await new MessageDialog(message, title).ShowAsync();
+                    else
                     {
-                        var dialog = new MessageDialog(message, title);
-                        dialog.CancelCommandIndex = 0;
-                        dialog.Commands.Add(new UICommand("OK"));
-                        await dialog.ShowAsync();
-                    });
+                        dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action(o));
+                    }
+                    return true;
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    if (action != null)
+                    {
+                        Task.Delay(500).ContinueWith(async t => await action(o));
+                    }
+                }
+                return false;
+            };
+            return action(null);
         }
 
         private void ProcessError(SdkException ex)
@@ -655,6 +671,7 @@ namespace SdkSample.WinRT
             copyItems.Clear();
             cutItems.Clear();
             this.manageActionsPopup.IsOpen = false;
+            this.NotifyMenuItems();
         }
 
         /// <summary>

@@ -162,6 +162,7 @@
     &lt;getcontentlength/&gt;
     &lt;getcontenttype/&gt;
     &lt;getetag/&gt;
+    &lt;resourcetype/&gt;
   &lt;/prop&gt;
 &lt;/propfind&gt;</value>
   </data>

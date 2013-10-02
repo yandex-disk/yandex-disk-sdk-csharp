@@ -80,6 +80,9 @@ namespace Disk.SDK.Utils
                                     reader.Read();
                                     itemInfo.Etag = reader.Value;
                                     break;
+                                case "d:collection":
+                                    itemInfo.IsDirectory = true;
+                                    break;
                                 case "public_url":
                                     reader.Read();
                                     itemInfo.PublicUrl = reader.Value;
